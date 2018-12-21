@@ -1,24 +1,45 @@
-// 我热爱我的老师们，所以我要给他们全评满分
-// 打开评教页面，运行，等全部评教完成之后手动点一下提交
+function jiege() {
+  document.querySelectorAll('.option-list').forEach(option => (option.querySelector('input').checked = true))
+  document.querySelectorAll('textarea').forEach(t => (t.value = "Oh Boy That's Good"))
+  document.querySelector('#sub').click()
+}
+
+function awei() {
+  document.querySelectorAll('input[type=checkbox]').forEach(t => (t.checked = true))
+  document.querySelectorAll('textarea').forEach(t => (t.value = "Oh Boy That's Good"))
+  validate_('5', 1)
+}
+
+function binbin() {
+  const rv = /(\d) - (\d)/.exec(document.querySelector('#contentDiv label').textContent)
+  let count = rv[1]
+  Array.from(document.querySelectorAll('.gridtable tr input'))
+    .filter(v => v.id)
+    .forEach(input => {
+      if (count-- > 0) {
+        input.value = 5
+      } else {
+        input.value = 1
+      }
+    })
+  document.querySelector('input[value=下一步]').click()
+}
 
 window.confirm = () => true
-
-function teacherGood() {
-  document.getElementById('op_6_15').checked = true;
-  document.getElementById('op_2_25').checked = true;
-  document.getElementById('op_4_35').checked = true;
-  document.getElementById('op_1_5').checked = true;
-  bg.form.submit('evaluateEditForm', null, null, 'doPost();');
-  setTimeout(clickNext, 2000)
-}
-
-function clickNext() {
-  let tag = Array.from(document.getElementsByTagName('a')).find(tag => tag.innerHTML.includes('进行评教'))
-  if (!tag) {
-    return
-  }
-  tag.click()
-  setTimeout(teacherGood, 2000)
-}
-
-clickNext()
+var wait = setInterval(function() {
+  try {
+    if (document.querySelector('#contentDiv label')) {
+      // 选五星课程
+      binbin()
+    } else if (document.querySelector('.option-list')) {
+      // 教材评价
+      jiege()
+    } else if (document.querySelector('input[value=提交，进入教师评教]')) {
+      document.querySelector('input[value=提交，进入教师评教]').click()
+    } else {
+      // 老师评价?
+      awei()
+    }
+    save(1)
+  } catch (e) {}
+}, 2000)
