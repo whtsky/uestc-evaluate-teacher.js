@@ -4,11 +4,23 @@
 window.confirm = () => true
 
 function genRandom(m,n){
-  let ans = Array(n);
-  
+  let ans = Array(n).fill(0);
+
+  let order = Array(n);
+  for(let i=0;i<n;i++){
+    order[i]=i;
+  }
+
+  for(let i=0;i<m;i++){
+    let chosen = Math.floor(Math.random() * (n-i));
+    ans[order[chosen]]=1;
+    order[chosen]=n-i-1;//the last of array
+  }
+
+  return ans;
 }
 
-//打星星
+//打星
 function starCourse() {
   //读取优秀课程的数量
   let cdiv = document.getElementById('contentDiv');
@@ -21,14 +33,24 @@ function starCourse() {
   let einput = eform.getElementsByTagName('input');
 
   //随机5星
+  let arr_of_five_stars = genRandom(num,einput.length-2);
+  console.log(arr_of_five_stars);
 
-
-
-
-  for(i=0;i<einput.length;i++){
-    if(einput[i].id!==null)
-      document.getElementById(einput[i].id).value=5;
+  //打星
+  for(let i=0;i<einput.length;i++){
+    if(einput[i].id){
+      if(arr_of_five_stars[i]){
+        document.getElementById(einput[i].id).value=5;
+        eval('fnShow_'+i+'(5)');
+      }
+      else{
+        document.getElementById(einput[i].id).value=4;
+        eval('fnShow_'+i+'(4)');
+      }
+    }
   }
+  save(0);//暂存
+  loadQtnaire();//下一步
 }
 
 function teacherGood() {
@@ -49,4 +71,5 @@ function clickNext() {
   setTimeout(teacherGood, 2000)
 }
 
+starCourse()
 clickNext()
