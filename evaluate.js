@@ -60,7 +60,7 @@ function textBook(){
   for (let i = 0; i < lists.length-3; i++) {
     lists[i].checked = true;
   }
-  document.getElementsByClassName('answer')[0].value='教材就不能不用自己编写的吗？';
+  // document.getElementsByClassName('answer')[0].value='教材就不能不用自己编写的吗？';
   document.getElementById('sub').click();
   setTimeout(clickNextBook, 2000);
 }
